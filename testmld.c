@@ -5,11 +5,10 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
-
-#include <mem.h>
 
 #include "set.h"
 #include "hash.h"

@@ -19,8 +19,6 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#include <mem.h>
-
 #include "hash.h"
 #include "set.h"
 #include "mlistdefns.h"

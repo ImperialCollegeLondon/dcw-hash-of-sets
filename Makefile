@@ -4,7 +4,7 @@ LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 OBJS	=	hash.o
 CFLAGS	=	-I. -I$(INCDIR) -Wall -g
-LDLIBS	=	-L$(LIBDIR) -lmem
+LDLIBS	=	-L$(LIBDIR)
 ALL	=	testmld
 
 all:	$(ALL)
