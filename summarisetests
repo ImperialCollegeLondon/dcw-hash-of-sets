@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+#
+#	summarisetests:
+#		intended to summarise a number of test results,
+#		(eg. from testmld.c in part2), in a prove-like
+#		format.
+
+use strict;
+use warnings;
+
+my $ntests = 0;
+my $nok = 0;
+my $nfail = 0;
+my $ok;
+my $fail;
+
+while( <> )
+{
+	next unless s/^T\s+//;
+	$ntests++;
+	if( s/:\s+ok$// )
+	{
+		$nok++;
+		$ok .= "  $_";
+	} else
+	{
+		$nfail++;
+		$fail .= "  $_";
+	}
+}
+if( $nfail == 0 )
+{
+	print "$ntests tests: all $nok pass\n";
+	print "passes:\n$ok";
+} else
+{
+	print "$ntests tests: $nok pass, $nfail fail\n";
+	print "failures:\n$fail\npasses:\n$ok";
+}
