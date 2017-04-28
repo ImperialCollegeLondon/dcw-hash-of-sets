@@ -1,10 +1,16 @@
 This is a cut-down version of a single part of Duncan White's mailing list
 flattener example project.  It depends on Duncan's c-tools directory,
-which lives in ~dcw/c-tools.
+which lives in ~/c-tools:
 
-To build it, first copy the c-tools to your home directory:
+To build this list flattener:
 
-cp -pr ~dcw/c-tools ~
+1. download the c-tools to your home directory:
+
+cd
+wget http://www.doc.ic.ac.uk/~dcw/c-tools.tgz
+tar xzf c-tools.tgz
+
+2. set up this project to use the c-tools library:
 
 bash users should do the following:
 
@@ -16,10 +22,10 @@ Whereas csh users should do:
 setenv TOOLDIR $HOME/c-tools
 setenv ARCH x86_64
 
-Then build it via:
+3. build this project via:
 
 make
 
-To run it's tests:
+4. run it's tests:
 
 make test
