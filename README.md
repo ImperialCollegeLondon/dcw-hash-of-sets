@@ -28,4 +28,4 @@ make
 
 make test
 
-[![Build Status](https://semaphoreci.com/api/v1/dcw803/dcw-mini-list-flattening/branches/master/badge.svg)](https://semaphor
+[![Build Status](https://semaphoreci.com/api/v1/dcw803/dcw-mini-list-flattening/branches/master/badge.svg)] (Semaphore)
