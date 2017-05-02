@@ -272,6 +272,3 @@ void mldForeach( mld m, mld_foreachcbfunc cb, void *extra )
 		/* nb: this is a Compound Literal Operator. */
 		/*     never heard of it?  C99 cleverness.. */
 }
-
-
-hello
