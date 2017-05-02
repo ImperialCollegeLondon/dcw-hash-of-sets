@@ -12,7 +12,7 @@ clean:
 	rm -f lib* *.o $(ALL)
 
 test:	testmld
-	./testmld | grep ^T
+	./testmld | ./summarisetests
 
 testmld:	testmld.o mlistdefns.o
 testmld.o:	mlistdefns.h
