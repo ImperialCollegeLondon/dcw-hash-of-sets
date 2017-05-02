@@ -7,7 +7,9 @@ To build this list flattener:
 1. download the c-tools to your home directory:
 
 cd
+
 wget http://www.doc.ic.ac.uk/~dcw/c-tools.tgz
+
 tar xzf c-tools.tgz
 
 2. set up this project to use the c-tools library:
