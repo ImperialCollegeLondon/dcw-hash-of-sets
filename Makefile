@@ -1,5 +1,5 @@
 CC	=	gcc
-DEST	=	$(TOOLDIR)
+DEST	=	$(HOME)/c-tools
 LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 CFLAGS	=	-I. -I$(INCDIR) -Wall -g

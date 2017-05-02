@@ -14,12 +14,10 @@ tar xzf c-tools.tgz
 
 bash users should do the following:
 
-export TOOLDIR=$HOME/c-tools
 export ARCH=x86_64
 
 Whereas csh users should do:
 
-setenv TOOLDIR $HOME/c-tools
 setenv ARCH x86_64
 
 3. build this project via:
