@@ -2,7 +2,7 @@ This is a new "combine hashes and sets" example, even simpler than my
 dcw-mini-list-flattening example.
 
 It implements a named collection of sets of strings: a hash-of-sets-of-strings,
-given that our c-tools library already contains sets-of-strings and
+given that we have already implemented sets-of-strings and
 hashes-from-strings-to-generic-pointers.
 
 
@@ -41,7 +41,9 @@ The main program that transforms the input to the output is "transform.c".
 
 # BUILDING THIS...
 
-It depends on my c-tools, May 2017 revision (i.e. new libADTs.a) -
+This code depends on sets-of-strings,
+and hashes-from-strings-to-generic-pointers,
+from the May 2017 version of my c-tools library -
 which you can download from my website (URL shown below).
 
 To build this "hash of sets of strings" example:
