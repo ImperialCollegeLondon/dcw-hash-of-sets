@@ -6,7 +6,7 @@ given that we have already implemented sets-of-strings and
 hashes-from-strings-to-generic-pointers.
 
 
-# BACKGROUND...
+# Background...
 
 Suppose we are presented with an input file with any number of lines
 of the form:
@@ -39,7 +39,7 @@ implemented by the hashofsets.[ch] module and unit-tested by "testhos.c".
 The main program that transforms the input to the output is "transform.c".
 
 
-# BUILDING THIS...
+# Building this...
 
 This code depends on sets-of-strings,
 and hashes-from-strings-to-generic-pointers,
