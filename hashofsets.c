@@ -1,11 +1,11 @@
 /*
- * hashofsets.h: a hash from a name to a set of members.
+ * hashofsets.c: a hash from a string to a set of other strings.
  *
- *	consider some form of "a contains b" information, where each
- *	named entity (eg "a") may contain any number of other named
- *	entities (eg "b").
+ *	Consider some form of "a contains b" information, specifically
+ *	"parent a has child b" information, in which a named parent
+ *	(eg "a") may contain any number of other named children (eg "b").
  *
- *	we store this as a name -> set(members) collection.
+ *	we store this as a parent -> set(child) collection.
  *
  * (C) Duncan C. White, May 2017
  */
@@ -24,22 +24,22 @@
 
 struct hos_s		/* an hos is simply a hash of sets with some meta-data */
 {
-	int nentries;
+	int nparents;
 	hash h;
 };
 
 
-static void printV( FILE *out, hashkey name, hashvalue v )
+static void printV( FILE *out, hashkey parent, hashvalue v )
 {
 	set s = (set)v;
-	fprintf( out, "%s: ", name );
+	fprintf( out, "%s: ", parent );
 	bool empty = setIsEmpty( s );
 	if( empty )
 	{
 		fprintf( out, "empty" );
 	} else
 	{
-		//fprintf( out, "members: " );
+		//fprintf( out, "children: " );
 		setDump( out, s );
 	}
 	fprintf( out, "\n" );
@@ -69,7 +69,7 @@ hos hosCreate( void )
 	hos new = (hos) malloc( sizeof(struct hos_s));
 	assert( new != NULL );
 	new->h = hashCreate( &printV, &freeV, &copyV );
-	new->nentries = 0;
+	new->nparents = 0;
 	return new;
 }
 
@@ -92,37 +92,37 @@ static void printStr( FILE *out, setkey s )
 
 
 /*
- * hosAddMember( m, name, member );
- *	Add member to name.
+ * hosAddChild( m, parent, child );
+ *	Add child to parent.
  */
-void hosAddMember( hos h, char *name, char *member )
+void hosAddChild( hos h, char *parent, char *child )
 {
-	set s = (set)hashFind( h->h, name );
-	if( s==NULL )	/* name not present in m yet */
+	set s = (set)hashFind( h->h, parent );
+	if( s==NULL )	/* parent not present in m yet */
 	{
 		s  = setCreate( &printStr );
-		hashSet( h->h, name, (hashvalue)s );
-		h->nentries++;
+		hashSet( h->h, parent, (hashvalue)s );
+		h->nparents++;
 	}
-	/* add member to the set */
-	setAdd( s, member );
+	/* add child to the set */
+	setAdd( s, child );
 }
 
 
 /*
- * hosRemoveMember( m, name, member );
- *	Remove member from name.
- *	Precondition: name exists in m
- *	Postcondition: name must be non-empty (i.e. you can't delete
- *		the last member of a list)
+ * hosRemoveChild( m, parent, child );
+ *	Remove Child from parent's set.
+ *	Precondition: parent exists in m
+ *	Postcondition: parent must be non-empty (i.e. you can't delete
+ *		the last Child of a set)
  */
-void hosRemoveMember( hos m, char *name, char *member )
+void hosRemoveChild( hos m, char *parent, char *child )
 {
-	set s = (set)hashFind( m->h, name );
+	set s = (set)hashFind( m->h, parent );
 	assert( s!=NULL );	/* enforce precondition */
 
-	/* remove member from the correct membership set */
-	setRemove( s, member );
+	/* remove child from the correct set of children */
+	setRemove( s, child );
 
 	/* enforce postcondition */
 	assert( ! setIsEmpty( s ) );
@@ -130,62 +130,62 @@ void hosRemoveMember( hos m, char *name, char *member )
 
 
 /*
- * bool ismember = hosIsMember( m, name, member );
- *	is member currently a member of name?
+ * bool ischild = hosIsChild( m, parent, child );
+ *	is child currently a child of parent?
  */
-bool hosIsMember( hos m, char *name, char *member )
+bool hosIsChild( hos m, char *parent, char *child )
 {
-	set s = (set)hashFind( m->h, name );
+	set s = (set)hashFind( m->h, parent );
 	if( s==NULL )
 	{
-		return false;	/* name not in m */
+		return false;	/* parent not in m */
 	}
-	return setIn( s, member );
+	return setIn( s, child );
 }
 
 
 /*
- * hosDump( out, m );
- *	display m to out.
+ * hosDump( out, h );
+ *	display h to out.
  */
 void hosDump( FILE *out, hos h )
 {
 	hashDump( out, h->h );
-	fprintf( out, "There are %d entries\n", h->nentries );
+	fprintf( out, "There are %d parents\n", h->nparents );
 }
 
 
 /*
- * set s = hosMembers( h, name );
- *	Retrieve name's set of members, nb: not cloned, may be empty set
- *	Precondition: name exists in h
+ * set s = hosChildren( h, parent );
+ *	Retrieve parent's set of Children, nb: not cloned, may be empty set
+ *	Precondition: parent exists in h
  */
-set hosMembers( hos h, char *name )
+set hosChildren( hos h, char *parent )
 {
-	set s = (set)hashFind( h->h, name );
+	set s = (set)hashFind( h->h, parent );
 	assert( s!=NULL );	/* enforce precondition */
 	return s;
 }
 
 
 /*
- * int n = hosNentries( m );
- *	how many entries does m contain?
+ * int n = hosNParents( h );
+ *	how many parents does h contain?
  */
-int hosNentries( hos h )
+int hosNParents( hos h )
 {
-	return h->nentries;
+	return h->nparents;
 }
 
 
 /* data passed as callback to foreachwrappercb */
 typedef struct { void *extra; hos_foreachcbfunc f; } wrap_pair;
 
-static void foreachwrappercb( hashkey name, hashvalue v, void *extra )
+static void foreachwrappercb( hashkey parent, hashvalue v, void *extra )
 {
 	set s = (set)v;
 	wrap_pair *g = (wrap_pair *)extra;
-	(*g->f)( name, s, g->extra );
+	(*g->f)( parent, s, g->extra );
 }
 
 

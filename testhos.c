@@ -90,7 +90,7 @@ typedef struct { set s; char msg[1024]; int nincsv; int nfound; } grumble;
 /*
  * testcontains_foundone( element, &a_grumble_struct );
  *	ok, found element in our csvstring.  we expect
- *	that it IS a member of the grumble struct's set.
+ *	that it IS a child of the grumble struct's set.
  *	let's check.
  */
 void testcontains_foundone( char *element, void *extra )
@@ -111,26 +111,25 @@ void testcontains_foundone( char *element, void *extra )
 
 
 /*
- * testcontains( h, name, csvmembers );
- *	test that hos h contains an entry for name, containing
- *	precisely the comma-separated-members members csvmembers
- *	(and no other members).  assumes that member names contain
+ * testcontains( h, parent, csvchildren );
+ *	test that hos h contains an entry for parent, containing
+ *	precisely the comma-separated csvchildren
+ *	(and no other children).  assumes that child names contain
  *	no commas themselves:-)
  */
-void testcontains( hos h, char *name, char *csvmembers )
+void testcontains( hos h, char *parent, char *csvchildren )
 {
-	set s = hosMembers( h, name );
-	//int ninset = setNMembers( s );
+	set s = hosChildren( h, parent );
 
 	grumble g;
 	g.s = s;
 	g.nfound = 0;
 	g.nincsv = 0;
-	sprintf( g.msg, "h(%s) contains %s", name, csvmembers );
+	sprintf( g.msg, "h(%s) contains %s", parent, csvchildren );
 
-	csvForeach( csvmembers, &testcontains_foundone, (void *)&g );
+	csvForeach( csvchildren, &testcontains_foundone, (void *)&g );
 
-	sprintf( g.msg, "h(%s) has %d member(s)", name, g.nincsv );
+	sprintf( g.msg, "h(%s) has %d children(s)", parent, g.nincsv );
 	testint( g.nfound, g.nincsv, g.msg );
 }
 
@@ -159,11 +158,11 @@ int main( int argc, char **argv )
 	#endif
 
 	h = hosCreate();
-	hosAddMember( h, "one", "a" );
+	hosAddChild( h, "one", "a" );
 	printf( "added <a> to <one> in h\n" );
-	testint( hosNentries(h), 1, "h has 1 entry" );
+	testint( hosNParents(h), 1, "h has 1 entry" );
 
-	set s2 = hosMembers( h, "one" );
+	set s2 = hosChildren( h, "one" );
 	testint( setNMembers(s2), 1, "h[one] has 1 entry" );
 
 	testbool( setIn(s2, "a" ), true, "a in h[one]" );
@@ -174,26 +173,26 @@ int main( int argc, char **argv )
 
 	testcontains( h, "one", "a" );	// test that "one" contains only "a"
 
-	hosAddMember( h, "one", "b" );
+	hosAddChild( h, "one", "b" );
 	printf( "added <b> to <one> in h\n" );
 	testcontains( h, "one", "a,b" );	// should contain a and b
 
-	hosAddMember( h, "one", "c" );
+	hosAddChild( h, "one", "c" );
 	printf( "added <c> to <one> in h\n" );
 	testcontains( h, "one", "a,b,c" );	// should contain a,b and c
 
-	hosAddMember( h, "two", "a" );
+	hosAddChild( h, "two", "a" );
 	printf( "added <a> to <two> in h\n" );
 	testcontains( h, "one", "a,b,c" );
 	testcontains( h, "two", "a" );
 
-	hosAddMember( h, "three", "z" );
+	hosAddChild( h, "three", "z" );
 	printf( "added <z> to <three> in h\n" );
 	testcontains( h, "one", "a,b,c" );
 	testcontains( h, "two", "a" );
 	testcontains( h, "three", "z" );
 
-	hosAddMember( h, "two", "d" );
+	hosAddChild( h, "two", "d" );
 	printf( "added <d> to <two> in h\n" );
 	testcontains( h, "one", "a,b,c" );
 	testcontains( h, "two", "d,a" );	// order irrelevent
