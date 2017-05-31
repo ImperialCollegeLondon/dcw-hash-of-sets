@@ -3,7 +3,7 @@ DEST	=	$(HOME)/c-tools
 LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 CFLAGS	=	-I. -I$(INCDIR) -Wall -g
-LDLIBS	=	-L$(LIBDIR) -lhash -lset
+LDLIBS	=	-L$(LIBDIR) -lADTs
 ALL	=	testmld
 
 all:	$(ALL)

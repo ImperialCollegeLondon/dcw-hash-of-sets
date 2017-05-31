@@ -9,7 +9,7 @@
  *	We represent this information as:
  *		a hash from listname to a pair of member sets
  *
- * (C) Duncan C. White, 2015
+ * (C) Duncan C. White, 2015-2017
  */
 
 
@@ -50,7 +50,7 @@ void mldStoreBasicInfo( set bi )
 }
 
 
-static void printV( FILE *out, hash_key l, hash_value v )
+static void printV( FILE *out, hashkey l, hashvalue v )
 {
 	pair p = (pair)v;
 	fprintf( out, "%s: ", l );
@@ -80,16 +80,16 @@ static pair newpair( set b, set nb )
 }
 
 
-static hash_value copyV( hash_value v )
+static hashvalue copyV( hashvalue v )
 {
 	pair p = (pair)v;
-	return (hash_value)
+	return (hashvalue)
 	       newpair( setCopy(p->basicmembers),
 		        setCopy(p->nonbasicmembers) );
 }
 
 
-static void freeV( hash_value v )
+static void freeV( hashvalue v )
 {
 	pair p = (pair)v;
 	setFree( p->basicmembers );
@@ -122,7 +122,7 @@ void mldFree( mld m )
 }
 
 
-static void printStr( FILE *out, set_key s )
+static void printStr( FILE *out, setkey s )
 {
 	fprintf( out, "%s,", s );
 }
@@ -140,13 +140,13 @@ void mldAddMember( mld m, char *listname, char *member )
 		set b  = setCreate( &printStr );
 		set nb = setCreate( &printStr );
 		p = newpair( b, nb );
-		hashSet( m->h, listname, (hash_value)p );
+		hashSet( m->h, listname, (hashvalue)p );
 	}
 	/* add member to the correct membership set */
 	set s = setIn( basicinfo, member ) ?
 			p->basicmembers :
 			p->nonbasicmembers;
-	setInclude( s, member );
+	setAdd( s, member );
 }
 
 
@@ -165,7 +165,7 @@ void mldRemoveMember( mld m, char *listname, char *member )
 	set s = setIn( basicinfo, member ) ?
 		p->basicmembers :
 		p->nonbasicmembers;
-	setExclude( s, member );
+	setRemove( s, member );
 	/* enforce postcondition */
 	assert( ! setIsEmpty( p->basicmembers ) ||
 		! setIsEmpty( p->nonbasicmembers ) );
@@ -253,7 +253,7 @@ bool mldAllBasicMembers( mld m, char *listname )
 /* data passed as callback to foreachwrappercb */
 typedef struct { void *extra; mld_foreachcbfunc f; } wrap_pair;
 
-static void foreachwrappercb( hash_key listname, hash_value v, void *extra )
+static void foreachwrappercb( hashkey listname, hashvalue v, void *extra )
 {
 	pair p = (pair)v;
 	wrap_pair *g = (wrap_pair *)extra;

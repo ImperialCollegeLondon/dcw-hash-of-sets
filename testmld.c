@@ -19,7 +19,7 @@
 static mld m;
 
 
-static void myPrint( FILE *out, set_key k )
+static void myPrint( FILE *out, setkey k )
 {
         fprintf( out, "%s,", k );
 }
@@ -49,7 +49,7 @@ typedef struct { char *listname; mld  m; } grumble;
  *	a listname and a mld (collection of mailing list defns),
  *	and a member to add, add that member to listname in the mld
  */
-static void foreach_addto( set_key member, void *extra )
+static void foreach_addto( setkey member, void *extra )
 {
 	grumble *g = (grumble *)extra;
 	mldAddMember( g->m, g->listname, member );
@@ -73,6 +73,7 @@ static void expandmembers( mld m, char *fromlist, char *tolist )
 
 	/* remove fromlist from tolist */
 	mldRemoveMember( m,tolist,fromlist );
+	assert( ! mldIsMember( m, tolist, fromlist ) ); /* check Remove works! */
 
 	/* add fromlist's basic members to tolist */
 	set b = mldBasicMembers( m, fromlist );
@@ -89,7 +90,7 @@ static void expandmembers( mld m, char *fromlist, char *tolist )
  * foreach_concat( member, (void *)label );
  *	given a set member, append that member to label
  */
-static void foreach_concat( set_key member, void *extra )
+static void foreach_concat( setkey member, void *extra )
 {
 	char *label = (char *)extra;
 	strcat( label, member );
@@ -151,7 +152,7 @@ int main( int argc, char **argv )
 
 	if( argc > 1 )
 	{
-		malloc(strlen(argv[1]));	/* test of libmem */
+		malloc(strlen(argv[1]));	/* test memory leaks */
 	}
 
 	char label[1024];
@@ -167,7 +168,7 @@ int main( int argc, char **argv )
 	/* now expand basic members of all-basic two into one */
 	expandmembers( m, "two", "one" );
 
-	printf( "\nafter foreach expansion of two into one, lists are:\n" );
+	printf( "\nafter expansion of two into one, lists are:\n" );
 
 	mldDump( stdout, m );
 
@@ -181,7 +182,7 @@ int main( int argc, char **argv )
 	/* now expand basic members of all-basic two into three */
 	expandmembers( m, "two", "three" );
 
-	printf( "\nafter foreach expansion of two into three, lists are:\n" );
+	printf( "\nafter expansion of two into three, lists are:\n" );
 
 	mldDump( stdout, m );
 
@@ -195,7 +196,7 @@ int main( int argc, char **argv )
 	/* now expand basic members of all-basic one into three */
 	expandmembers( m, "one", "three" );
 
-	printf( "\nafter foreach expansion of one into three, lists are:\n" );
+	printf( "\nafter expansion of one into three, lists are:\n" );
 
 	mldDump( stdout, m );
 
