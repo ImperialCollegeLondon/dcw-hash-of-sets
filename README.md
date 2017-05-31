@@ -34,9 +34,7 @@ two: c              (two is the parent of c only)
 Clearly, the core data type here is a hash from parent names (strings) to
 sets of strings (the set of children).
 
-We store this as a parent -> set(child) collection.
-
-A hash-of-sets-of-strings,
+We store this as a hash-of-sets-of-strings,
 implemented by the hashofsets.[ch] module and unit-tested by "testhos.c".
 The main program that transforms the input to the output is "transform.c".
 
