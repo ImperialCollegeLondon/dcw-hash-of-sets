@@ -6,15 +6,15 @@ given that our c-tools library already contains sets-of-strings and
 hashes-from-strings-to-generic-pointers.
 
 
-BACKGROUND...
+# BACKGROUND...
 
 Suppose we are presented with an input file with any number of lines
 of the form:
 
-one: a               (meaning that "one is the parent of a")
+```one: a               (meaning that "one is the parent of a")
 two: c               (meaning that "two is the parent of c")
 one: b               (meaning that "one is the parent of b")
-one: c               (meaning that "one is the parent of c")
+one: c               (meaning that "one is the parent of c")```
 
 ie. a named parent (eg "one") may have any number of named children (eg "b"),
 there may be any number of parents, any number of children per parent,
@@ -24,8 +24,8 @@ and our goal is to collect all the children belonging to each parent,
 producing output showing, for each parent, the complete sorted list of
 their children:
 
-one: b,c,d          (one is the parent of b, c and d - in sorted order)
-two: c              (two is the parent of c only)
+```one: b,c,d          (one is the parent of b, c and d - in sorted order)
+two: c              (two is the parent of c only)```
 
 Clearly, the core data type here is a hash from parent names (strings) to
 sets of strings (the set of children).
@@ -37,7 +37,7 @@ implemented by the hashofsets.[ch] module and unit-tested by "testhos.c".
 The main program that transforms the input to the output is "transform.c".
 
 
-BUILDING THIS...
+# BUILDING THIS...
 
 It depends on my c-tools, May 2017 revision (i.e. new libADTs.a) -
 which you can download from my website (URL shown below).
