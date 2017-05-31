@@ -14,7 +14,8 @@ of the form:
 ```one: a               (meaning that "one is the parent of a")
 two: c               (meaning that "two is the parent of c")
 one: b               (meaning that "one is the parent of b")
-one: c               (meaning that "one is the parent of c")```
+one: c               (meaning that "one is the parent of c")
+```
 
 ie. a named parent (eg "one") may have any number of named children (eg "b"),
 there may be any number of parents, any number of children per parent,
@@ -25,7 +26,8 @@ producing output showing, for each parent, the complete sorted list of
 their children:
 
 ```one: b,c,d          (one is the parent of b, c and d - in sorted order)
-two: c              (two is the parent of c only)```
+two: c              (two is the parent of c only)
+```
 
 Clearly, the core data type here is a hash from parent names (strings) to
 sets of strings (the set of children).
