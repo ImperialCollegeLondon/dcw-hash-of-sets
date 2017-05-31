@@ -1,10 +1,18 @@
-[![Build Status](https://semaphoreci.com/api/v1/dcw803/dcw-mini-list-flattening/branches/master/badge.svg)](https://semaphoreci.com/dcw803/dcw-mini-list-flattening)
+This is a new "combine hashes and sets" example, even simpler than my
+dcw-mini-list-flattening example.
 
-This is a cut-down version of a single part of Duncan White's mailing list
-flattener example project.  It depends on Duncan's c-tools directory,
-which lives in ~/c-tools:
+It implements a named collection of sets of strings.
 
-To build this list flattener:
+Consider some form of "a contains b" information, where each
+named entity (eg "a") may contain any number of other named
+entities (eg "b").
+
+We store this as a name -> set(members) collection.
+
+It depends on my c-tools, May 2017 revision (i.e. new libADTs.a) -
+which you can soon download from my website (URL below).
+
+To build this "hash of sets" example:
 
 1. download the c-tools to your home directory:
 
