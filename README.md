@@ -79,7 +79,7 @@ make test
 valgrind ./transform < pc-input
 
 
-PERL ONE-LINER
+# Doing transform as a Perl one-liner
 
 Depressingly, after writing nearly 500 lines of C code (not including the
 hash and set modules!), transform could be written as a Perl one-liner:
