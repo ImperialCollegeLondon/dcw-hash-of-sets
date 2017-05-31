@@ -15,6 +15,8 @@
 #include "hashofsets.h"
 
 
+//#define TESTSET
+
 
 static hos h;
 
@@ -133,12 +135,12 @@ void testcontains( hos h, char *parent, char *csvchildren )
 	testint( g.nfound, g.nincsv, g.msg );
 }
 
-
+#ifdef TESTSET
 static void myPrint( FILE *out, char *s )
 {
 	fprintf( out, "%s,", s );
 }
-
+#endif
 
 int main( int argc, char **argv )
 {
@@ -147,7 +149,7 @@ int main( int argc, char **argv )
 		malloc(strlen(argv[1]));	/* test memory leaks */
 	}
 
-	#if 0
+	#ifdef TESTSET
 	set s = setCreate( &myPrint );
 	setAdd( s, "one" );
 	printf( "set s = " );
@@ -168,7 +170,7 @@ int main( int argc, char **argv )
 	testbool( setIn(s2, "a" ), true, "a in h[one]" );
 	testbool( setIn(s2, "b" ), false, "b in h[one]" );
 
-	printf( "collection initially:\n" );
+	printf( "initial families:\n" );
 	hosDump( stdout, h );
 
 	testcontains( h, "one", "a" );	// test that "one" contains only "a"
@@ -198,10 +200,8 @@ int main( int argc, char **argv )
 	testcontains( h, "two", "d,a" );	// order irrelevent
 	testcontains( h, "three", "z" );
 
-	printf( "collection finally:\n" );
+	printf( "final families:\n" );
 	hosDump( stdout, h );
-	#if 0
-	#endif
 
 	hosFree( h );
 
