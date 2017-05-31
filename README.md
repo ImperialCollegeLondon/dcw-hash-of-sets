@@ -73,3 +73,50 @@ make
 4. run it's tests:
 
 make test
+
+5. run transform on the pc-input file and check for memory leaks:
+
+valgrind ./transform < pc-input
+
+
+PERL ONE-LINER
+
+Depressingly, after writing nearly 500 lines of C code (not including the
+hash and set modules!), transform could be written as a Perl one-liner:
+
+perl -MData::Dumper -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {print Dumper \%h }' < pc-input
+
+which produces the output:
+
+$VAR1 = {
+          'one' => {
+                     'c' => 1,
+                     'a' => 1,
+                     'b' => 1
+                   },
+          'two' => {
+                     'a' => 1,
+                     'd' => 1
+                   },
+          'three' => {
+                       'z' => 1
+                     }
+        };
+
+Data::Dumper is a Perl module that prints out Perl data structures in a
+rather JSON like format, and the data structure %h is a hash of hashes,
+and the inner hashes are "sethashes", i.e. a hash whose values are all 1,
+representing a set - the keys of that hash are the members of the set.
+
+so h[P]->[C] is a boolean expression that represents "is C a child of parent P"
+
+If we wanted to format the output in the actual desired form, that'd be:
+
+perl -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {foreach $p (sort keys %h) { $c = $h{$p}; $k = join( ",", sort keys %$c ); print "$p: $k" } }' < pc-input
+
+Perl is the most amazing text manipulation language I know.  As the Pragmatic
+Programmers say:
+
+Tip 28: Learn a Text Manipulation Language
+
+and they recommend Perl:-)
