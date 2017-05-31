@@ -84,10 +84,13 @@ valgrind ./transform < pc-input
 Depressingly, after writing nearly 500 lines of C code (not including the
 hash and set modules!), transform could be written as a Perl one-liner:
 
+```
 perl -MData::Dumper -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {print Dumper \%h }' < pc-input
+```
 
 which produces the output:
 
+```
 $VAR1 = {
           'one' => {
                      'c' => 1,
@@ -102,6 +105,7 @@ $VAR1 = {
                        'z' => 1
                      }
         };
+```
 
 Data::Dumper is a Perl module that prints out Perl data structures in a
 rather JSON like format, and the data structure %h is a hash of hashes,
@@ -112,7 +116,9 @@ so h[P]->[C] is a boolean expression that represents "is C a child of parent P"
 
 If we wanted to format the output in the actual desired form, that'd be:
 
+```
 perl -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {foreach $p (sort keys %h) { $c = $h{$p}; $k = join( ",", sort keys %$c ); print "$p: $k" } }' < pc-input
+```
 
 Perl is the most amazing text manipulation language I know.  As the Pragmatic
 Programmers say:
