@@ -160,10 +160,10 @@ int main( int argc, char **argv )
 	h = hosCreate();
 	hosAddChild( h, "one", "a" );
 	printf( "added <a> to <one> in h\n" );
-	testint( hosNParents(h), 1, "h has 1 entry" );
+	testint( hosNFamilies(h), 1, "h has 1 family" );
 
 	set s2 = hosChildren( h, "one" );
-	testint( setNMembers(s2), 1, "h[one] has 1 entry" );
+	testint( setNMembers(s2), 1, "h[one] has 1 child" );
 
 	testbool( setIn(s2, "a" ), true, "a in h[one]" );
 	testbool( setIn(s2, "b" ), false, "b in h[one]" );

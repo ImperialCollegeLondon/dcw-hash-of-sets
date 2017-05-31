@@ -22,5 +22,5 @@ extern void hosRemoveChild( hos m, char * parent, char * child );
 extern bool hosIsChild( hos m, char * parent, char * child );
 extern void hosDump( FILE * out, hos h );
 extern set hosChildren( hos h, char * parent );
-extern int hosNParents( hos h );
+extern int hosNFamilies( hos h );
 extern void hosForeach( hos h, hos_foreachcbfunc cb, void * extra );

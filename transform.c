@@ -47,12 +47,14 @@ int main( int argc, char **argv )
 		assert( parent != NULL );
 		char *child = strtok( NULL, ": " );
 		assert( child != NULL );
-		printf( "// debug parent='%s', child='%s'\n", parent, child );
+		//printf( "// debug parent='%s', child='%s'\n", parent, child );
 		hosAddChild( h, parent, child );
 		printf( "added <%s> to <%s>\n", child, parent );
 	}
 
 	hosDump( stdout, h );
+
+	hosFree( h );
 
 	return 0;
 }

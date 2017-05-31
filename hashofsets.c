@@ -24,7 +24,7 @@
 
 struct hos_s		/* an hos is simply a hash of sets with some meta-data */
 {
-	int nparents;
+	int nfamilies;
 	hash h;
 };
 
@@ -69,7 +69,7 @@ hos hosCreate( void )
 	hos new = (hos) malloc( sizeof(struct hos_s));
 	assert( new != NULL );
 	new->h = hashCreate( &printV, &freeV, &copyV );
-	new->nparents = 0;
+	new->nfamilies = 0;
 	return new;
 }
 
@@ -102,7 +102,7 @@ void hosAddChild( hos h, char *parent, char *child )
 	{
 		s  = setCreate( &printStr );
 		hashSet( h->h, parent, (hashvalue)s );
-		h->nparents++;
+		h->nfamilies++;
 	}
 	/* add child to the set */
 	setAdd( s, child );
@@ -151,7 +151,7 @@ bool hosIsChild( hos m, char *parent, char *child )
 void hosDump( FILE *out, hos h )
 {
 	hashDump( out, h->h );
-	fprintf( out, "There are %d parents\n", h->nparents );
+	fprintf( out, "There are %d families\n", h->nfamilies );
 }
 
 
@@ -169,12 +169,12 @@ set hosChildren( hos h, char *parent )
 
 
 /*
- * int n = hosNParents( h );
- *	how many parents does h contain?
+ * int n = hosNFamilies( h );
+ *	how many families (parents with kids) does h contain?
  */
-int hosNParents( hos h )
+int hosNFamilies( hos h )
 {
-	return h->nparents;
+	return h->nfamilies;
 }
 
 
