@@ -11,7 +11,8 @@ hashes-from-strings-to-generic-pointers.
 Suppose we are presented with an input file with any number of lines
 of the form:
 
-```one: a               (meaning that "one is the parent of a")
+```
+one: a               (meaning that "one is the parent of a")
 two: c               (meaning that "two is the parent of c")
 one: b               (meaning that "one is the parent of b")
 one: c               (meaning that "one is the parent of c")
@@ -25,7 +26,8 @@ and our goal is to collect all the children belonging to each parent,
 producing output showing, for each parent, the complete sorted list of
 their children:
 
-```one: b,c,d          (one is the parent of b, c and d - in sorted order)
+```
+one: b,c,d          (one is the parent of b, c and d - in sorted order)
 two: c              (two is the parent of c only)
 ```
 
