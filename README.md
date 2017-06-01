@@ -82,7 +82,8 @@ valgrind ./transform < pc-input
 # Doing transform as a Perl one-liner
 
 Depressingly, after writing nearly 500 lines of C code (not including the
-hash and set modules!), transform could be written as a Perl one-liner:
+hash and set modules!), it turns out that we could write transform as
+a Perl one-liner:
 
 ```
 perl -MData::Dumper -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {print Dumper \%h }' < pc-input
@@ -112,9 +113,9 @@ rather JSON like format, and the data structure %h is a hash of hashes,
 and the inner hashes are "sethashes", i.e. a hash whose values are all 1,
 representing a set - the keys of that hash are the members of the set.
 
-so h[P]->[C] is a boolean expression that represents "is C a child of parent P"
+so $h[P]->[C] is a boolean expression that represents "is C a child of parent P"
 
-If we wanted to format the output in the actual desired form, that'd be:
+If we want to format the output in the actual desired form, that'd be:
 
 ```
 perl -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {foreach $p (sort keys %h) { $c = $h{$p}; $k = join( ",", sort keys %$c ); print "$p: $k" } }' < pc-input
@@ -123,6 +124,6 @@ perl -lane '($p,$c) = split( /:\s*/ ); $h{$p}->{$c}++; END {foreach $p (sort key
 Perl is the most amazing text manipulation language I know.  As the Pragmatic
 Programmers say:
 
-Tip 28: Learn a Text Manipulation Language
+	Tip 28: Learn a Text Manipulation Language
 
-and they recommend Perl:-)
+they recommend Perl, and they're absolutely right:-)
