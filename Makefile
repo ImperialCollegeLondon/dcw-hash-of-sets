@@ -14,8 +14,9 @@ clean:
 test:	testfamcoll
 	./testfamcoll | ./summarisetests
 
-testfamcoll:	testfamcoll.o famcoll.o
-transform:	transform.o famcoll.o
-testfamcoll.o:	famcoll.h
-transform.o:	famcoll.h
+testfamcoll:	testfamcoll.o famcoll.o csvsplit.o
+transform:	transform.o famcoll.o readline.o
+testfamcoll.o:	famcoll.h csvsplit.h
+transform.o:	famcoll.h readline.h
 famcoll.o:	famcoll.h
+csvsplit.o:	csvsplit.h

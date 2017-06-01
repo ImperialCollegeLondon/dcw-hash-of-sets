@@ -91,7 +91,7 @@ void famcollFree( famcoll f )
 }
 
 
-static void printStr( FILE *out, setkey s )
+static void printchild( FILE *out, setkey s )
 {
 	fprintf( out, "%s,", s );
 }
@@ -106,7 +106,7 @@ void famcollAddChild( famcoll f, char *parent, char *child )
 	set s = (set)hashFind( f->f, parent );
 	if( s==NULL )	/* parent not present in f yet */
 	{
-		s  = setCreate( &printStr );
+		s  = setCreate( &printchild );
 		hashSet( f->f, parent, (hashvalue)s );
 		f->nfamilies++;
 	}
@@ -127,7 +127,7 @@ void famcollRemoveChild( famcoll f, char *parent, char *child )
 	set s = (set)hashFind( f->f, parent );
 	assert( s!=NULL );	/* enforce precondition */
 
-	/* remove child from the correct set of children */
+	/* remove child from that parent's set of children */
 	setRemove( s, child );
 
 	/* enforce postcondition */
@@ -152,7 +152,7 @@ bool famcollIsChild( famcoll f, char *parent, char *child )
 
 /*
  * famcollDump( out, f );
- *	display f to out.
+ *	display family collection f to out.
  */
 void famcollDump( FILE *out, famcoll f )
 {
@@ -163,7 +163,7 @@ void famcollDump( FILE *out, famcoll f )
 
 /*
  * set s = famcollChildren( f, parent );
- *	Retrieve parent's set of Children, nb: not cloned, may be empty set
+ *	Retrieve parent's set of children, nb: they are not cloned
  *	Precondition: parent exists in f
  */
 set famcollChildren( famcoll f, char *parent )
@@ -187,18 +187,17 @@ int famcollNFamilies( famcoll f )
 /* data passed as callback to foreachhelper */
 typedef struct { void *extra; famcollforeachcb f; } pair;
 
-static void foreachhelper( hashkey parent, hashvalue v, void *extra )
+static void foreachhelper( hashkey parent, hashvalue kids, void *extra )
 {
-	set s = (set)v;
 	pair *g = (pair *)extra;
-	(*g->f)( parent, s, g->extra );
+	(*g->f)( parent, (set)kids, g->extra );
 }
 
 
 /*
  * famcollForeach( f, cb, extra );
- *	foreach (P,set of children) entry, call the callback with
- *	P, the set, and the given extra value.
+ *	foreach (P,set of kids) entry, call the given callback cb
+ *	with parent P, the set of kids, and the given extra value.
  */
 void famcollForeach( famcoll f, famcollforeachcb cb, void *extra )
 {

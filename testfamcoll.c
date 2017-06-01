@@ -10,8 +10,10 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "set.h"
-#include "hash.h"
+#include <set.h>
+#include <hash.h>
+
+#include "csvsplit.h"
 #include "famcoll.h"
 
 
@@ -48,39 +50,6 @@ static void testint( int v, int expected, char *msg )
 	{
 		printf( "T %s: is %d: ok\n", msg, v );
 	}
-}
-
-
-// a csv foreach func takes a char * (a csv value) and a void *
-// (an extra value), and returns nothing
-
-typedef void (*csvforeachfunc)( char *, void * );
-
-
-/*
- * csvForeach( csvstring, &foreach_callback, (void *)extravalue );
- *	Split csvstring into each comma-separated field, calling the
- *	foreach calback for each comma-separated field, passing the
- *	value and extravalue as parameters to it.
- *	Potentially: a generally useful utility function?
- */
-void csvForeach( char *csvstring, csvforeachfunc cb, void *extra )
-{
-	// strdup modifies it's string..
-	char *copy = strdup( csvstring );
-
-	char *first = strtok( copy, "," );
-	assert( first != NULL );
-	(*cb)( first, extra );
-	printf( "debug: csvForeach: found %s\n", first );
-
-	char *next;
-	while( (next = strtok(NULL,",")) != NULL )
-	{
-		printf( "debug: csvForeach: found %s\n", next );
-		(*cb)( next, extra );
-	}
-	free( copy );
 }
 
 
