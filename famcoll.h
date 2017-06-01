@@ -13,13 +13,6 @@
  *      actually, a hash from a string (the parent name) to a set of
  *	other strings (the names of the children of that parent).
  *
- *
- *	Consider some form of "a contains b" information, specifically
- *	"parent a has child b" information, in which a named parent
- *	(eg "a") may contain any number of other named children (eg "b").
- *
- *	we store this as a parent -> set(child) collection.
- *
  * (C) Duncan C. White, May 2017
  */
 
