@@ -36,8 +36,6 @@ void csvForeach( char *csvstring, csvforeachcb cb, void *extra )
 		printf( "debug: csvForeach: found %s\n", next );
 		(*cb)( next, extra );
 	}
-	// and free the copy..
+	// don't forget to..
 	free( copy );
 }
-
-
