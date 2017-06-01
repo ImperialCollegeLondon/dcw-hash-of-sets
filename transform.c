@@ -26,7 +26,9 @@ static famcoll f;
 int main( int argc, char **argv )
 {
 	char line[STRSIZE];
+
 	f = famcollCreate();
+
 	while( readline(stdin, line, STRSIZE ) != 0 )
 	{
 		//printf( "// debug: read line '%s'\n", line );
