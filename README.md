@@ -48,12 +48,11 @@ which you can download from my website (URL shown below).
 
 To build this "hash of sets of strings" example:
 
-1. download the c-tools to your home directory:
+1. if you don't already have ~/c-tools installed,
+   download the c-tools to your home directory:
 
 cd
-
 wget http://www.doc.ic.ac.uk/~dcw/c-tools.tgz
-
 tar xzf c-tools.tgz
 
 2. set up this project to use the c-tools library:

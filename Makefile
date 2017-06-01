@@ -4,18 +4,18 @@ INCDIR	=	$(DEST)/include
 CC	=	gcc
 CFLAGS	=	-I. -I$(INCDIR) -Wall -g
 LDLIBS	=	-L$(LIBDIR) -lADTs
-ALL	=	testhos transform
+ALL	=	testfamcoll transform
 
 all:	$(ALL)
 
 clean:
 	rm -f lib* *.o $(ALL)
 
-test:	testhos
-	./testhos | ./summarisetests
+test:	testfamcoll
+	./testfamcoll | ./summarisetests
 
-testhos:	testhos.o hashofsets.o
-transform:	transform.o hashofsets.o
-testhos.o:	hashofsets.h
-transform.o:	hashofsets.h
-hashofsets.o:	hashofsets.h
+testfamcoll:	testfamcoll.o famcoll.o
+transform:	transform.o famcoll.o
+testfamcoll.o:	famcoll.h
+transform.o:	famcoll.h
+famcoll.o:	famcoll.h

@@ -1,5 +1,5 @@
 /*
- * testhos.c: test program for the hashofsets module.
+ * testfamcoll.c: test program for the famcoll module.
  *
  * (C) Duncan C. White, May 2017
  */
@@ -12,13 +12,13 @@
 
 #include "set.h"
 #include "hash.h"
-#include "hashofsets.h"
+#include "famcoll.h"
 
 
 //#define TESTSET
 
 
-static hos h;
+static famcoll f;
 
 
 #if 1
@@ -113,25 +113,25 @@ void testcontains_foundone( char *element, void *extra )
 
 
 /*
- * testcontains( h, parent, csvchildren );
- *	test that hos h contains an entry for parent, containing
+ * testcontains( f, parent, csvchildren );
+ *	test that famcoll f contains an entry for parent, containing
  *	precisely the comma-separated csvchildren
  *	(and no other children).  assumes that child names contain
  *	no commas themselves:-)
  */
-void testcontains( hos h, char *parent, char *csvchildren )
+void testcontains( famcoll f, char *parent, char *csvchildren )
 {
-	set s = hosChildren( h, parent );
+	set s = famcollChildren( f, parent );
 
 	grumble g;
 	g.s = s;
 	g.nfound = 0;
 	g.nincsv = 0;
-	sprintf( g.msg, "h(%s) contains %s", parent, csvchildren );
+	sprintf( g.msg, "f(%s) contains %s", parent, csvchildren );
 
 	csvForeach( csvchildren, &testcontains_foundone, (void *)&g );
 
-	sprintf( g.msg, "h(%s) has %d children(s)", parent, g.nincsv );
+	sprintf( g.msg, "f(%s) has %d children(s)", parent, g.nincsv );
 	testint( g.nfound, g.nincsv, g.msg );
 }
 
@@ -159,51 +159,51 @@ int main( int argc, char **argv )
 	testint( setNMembers(s), 1, "s has 1 entry" );
 	#endif
 
-	h = hosCreate();
-	hosAddChild( h, "one", "a" );
-	printf( "added <a> to <one> in h\n" );
-	testint( hosNFamilies(h), 1, "h has 1 family" );
+	f = famcollCreate();
+	famcollAddChild( f, "one", "a" );
+	printf( "added <a> to <one> in f\n" );
+	testint( famcollNFamilies(f), 1, "f has 1 family" );
 
-	set s2 = hosChildren( h, "one" );
-	testint( setNMembers(s2), 1, "h[one] has 1 child" );
+	set s2 = famcollChildren( f, "one" );
+	testint( setNMembers(s2), 1, "f[one] has 1 child" );
 
-	testbool( setIn(s2, "a" ), true, "a in h[one]" );
-	testbool( setIn(s2, "b" ), false, "b in h[one]" );
+	testbool( setIn(s2, "a" ), true, "a in f[one]" );
+	testbool( setIn(s2, "b" ), false, "b in f[one]" );
 
 	printf( "initial families:\n" );
-	hosDump( stdout, h );
+	famcollDump( stdout, f );
 
-	testcontains( h, "one", "a" );	// test that "one" contains only "a"
+	testcontains( f, "one", "a" );	// test that "one" contains only "a"
 
-	hosAddChild( h, "one", "b" );
-	printf( "added <b> to <one> in h\n" );
-	testcontains( h, "one", "a,b" );	// should contain a and b
+	famcollAddChild( f, "one", "b" );
+	printf( "added <b> to <one> in f\n" );
+	testcontains( f, "one", "a,b" );	// should contain a and b
 
-	hosAddChild( h, "one", "c" );
-	printf( "added <c> to <one> in h\n" );
-	testcontains( h, "one", "a,b,c" );	// should contain a,b and c
+	famcollAddChild( f, "one", "c" );
+	printf( "added <c> to <one> in f\n" );
+	testcontains( f, "one", "a,b,c" );	// should contain a,b and c
 
-	hosAddChild( h, "two", "a" );
-	printf( "added <a> to <two> in h\n" );
-	testcontains( h, "one", "a,b,c" );
-	testcontains( h, "two", "a" );
+	famcollAddChild( f, "two", "a" );
+	printf( "added <a> to <two> in f\n" );
+	testcontains( f, "one", "a,b,c" );
+	testcontains( f, "two", "a" );
 
-	hosAddChild( h, "three", "z" );
-	printf( "added <z> to <three> in h\n" );
-	testcontains( h, "one", "a,b,c" );
-	testcontains( h, "two", "a" );
-	testcontains( h, "three", "z" );
+	famcollAddChild( f, "three", "z" );
+	printf( "added <z> to <three> in f\n" );
+	testcontains( f, "one", "a,b,c" );
+	testcontains( f, "two", "a" );
+	testcontains( f, "three", "z" );
 
-	hosAddChild( h, "two", "d" );
-	printf( "added <d> to <two> in h\n" );
-	testcontains( h, "one", "a,b,c" );
-	testcontains( h, "two", "d,a" );	// order irrelevent
-	testcontains( h, "three", "z" );
+	famcollAddChild( f, "two", "d" );
+	printf( "added <d> to <two> in f\n" );
+	testcontains( f, "one", "a,b,c" );
+	testcontains( f, "two", "d,a" );	// order irrelevent
+	testcontains( f, "three", "z" );
 
 	printf( "final families:\n" );
-	hosDump( stdout, h );
+	famcollDump( stdout, f );
 
-	hosFree( h );
+	famcollFree( f );
 
 	return 0;
 }

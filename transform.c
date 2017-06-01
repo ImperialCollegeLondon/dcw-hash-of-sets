@@ -12,11 +12,11 @@
 
 #include "set.h"
 #include "hash.h"
-#include "hashofsets.h"
+#include "famcoll.h"
 
 
 
-static hos h;
+static famcoll f;
 
 
 int readline( FILE *in, char *buf, int maxlen )
@@ -39,7 +39,7 @@ int readline( FILE *in, char *buf, int maxlen )
 int main( int argc, char **argv )
 {
 	char line[STRSIZE];
-	h = hosCreate();
+	f = famcollCreate();
 	while( readline(stdin, line, STRSIZE ) != 0 )
 	{
 		//printf( "// debug: read line '%s'\n", line );
@@ -48,13 +48,13 @@ int main( int argc, char **argv )
 		char *child = strtok( NULL, ": " );
 		assert( child != NULL );
 		//printf( "// debug parent='%s', child='%s'\n", parent, child );
-		hosAddChild( h, parent, child );
+		famcollAddChild( f, parent, child );
 		printf( "added <%s> to <%s>\n", child, parent );
 	}
 
-	hosDump( stdout, h );
+	famcollDump( stdout, f );
 
-	hosFree( h );
+	famcollFree( f );
 
 	return 0;
 }
