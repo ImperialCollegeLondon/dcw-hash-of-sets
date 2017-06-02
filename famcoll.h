@@ -1,8 +1,8 @@
 /*
  * famcoll.h:
  *
- *	Consider a collect of family information to do with parents and their
- *	children.
+ *	Consider a collection of family information about parents
+ *	and their children.
  *
  *	Specifically, we want to associate a non-empty set of children S
  *	with a named parent P.  We will be told (parent P, child C) pairs,

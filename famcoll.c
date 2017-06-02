@@ -1,8 +1,8 @@
 /*
  * famcoll.c:
  *
- *	Consider a collect of family information to do with parents and their
- *	children.
+ *	Consider a collection of family information about parents
+ *	and their children.
  *
  *	Specifically, we want to associate a non-empty set of children S
  *	with a named parent P.  We will be told (parent P, child C) pairs,
@@ -184,16 +184,6 @@ int famcollNFamilies( famcoll f )
 }
 
 
-/* data passed as callback to foreachhelper */
-typedef struct { void *extra; famcollforeachcb f; } pair;
-
-static void foreachhelper( hashkey parent, hashvalue kids, void *extra )
-{
-	pair *g = (pair *)extra;
-	(*g->f)( parent, (set)kids, g->extra );
-}
-
-
 /*
  * famcollForeach( f, cb, extra );
  *	foreach (P,set of kids) entry, call the given callback cb
@@ -201,8 +191,8 @@ static void foreachhelper( hashkey parent, hashvalue kids, void *extra )
  */
 void famcollForeach( famcoll f, famcollforeachcb cb, void *extra )
 {
-	pair p;
-	p.extra = extra;
-	p.f = cb;
-	hashForeach( f->f, &foreachhelper, (void *)&p );
+	// the func ptr type cast is safe, the only difference is that
+	// a famcollforeachcb's 2nd arg is a set, whereas a hashforeachcbfunc's
+	// 2nd argument is a void *.  I'm sure it'll be great:-)
+	hashForeach( f->f, (hashforeachcbfunc)cb, extra );
 }
