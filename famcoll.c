@@ -116,37 +116,13 @@ void famcollAddChild( famcoll f, char *parent, char *child )
 
 
 /*
- * famcollRemoveChild( f, parent, child );
- *	Remove Child from parent's set.
- *	Precondition: parent exists in f
- *	Postcondition: parent must be non-empty (i.e. you can't delete
- *		the last Child of a set)
- */
-void famcollRemoveChild( famcoll f, char *parent, char *child )
-{
-	set s = (set)hashFind( f->f, parent );
-	assert( s!=NULL );	/* enforce precondition */
-
-	/* remove child from that parent's set of children */
-	setRemove( s, child );
-
-	/* enforce postcondition */
-	assert( ! setIsEmpty( s ) );
-}
-
-
-/*
  * bool ischild = famcollIsChild( f, parent, child );
  *	is child currently a child of parent?
  */
 bool famcollIsChild( famcoll f, char *parent, char *child )
 {
 	set s = (set)hashFind( f->f, parent );
-	if( s==NULL )
-	{
-		return false;	/* parent not in f */
-	}
-	return setIn( s, child );
+	return s!=NULL && setIn( s, child );
 }
 
 
@@ -192,7 +168,7 @@ int famcollNFamilies( famcoll f )
 void famcollForeach( famcoll f, famcollforeachcb cb, void *extra )
 {
 	// the func ptr type cast is safe, the only difference is that
-	// a famcollforeachcb's 2nd arg is a set, whereas a hashforeachcbfunc's
+	// famcollforeachcb's 2nd arg is a set, whereas hashforeachcb's
 	// 2nd argument is a void *.  I'm sure it'll be great:-)
-	hashForeach( f->f, (hashforeachcbfunc)cb, extra );
+	hashForeach( f->f, (hashforeachcb)cb, extra );
 }
