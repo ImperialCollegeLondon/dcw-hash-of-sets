@@ -13,7 +13,6 @@
 #include <set.h>
 #include <hash.h>
 
-#include "csvsplit.h"
 #include "famcoll.h"
 
 
@@ -92,16 +91,43 @@ void testcontains( famcoll f, char *parent, char *csvchildren )
 {
 	set s = famcollChildren( f, parent );
 
-	grumble g;
-	g.s = s;
-	g.nfound = 0;
-	g.nincsv = 0;
-	sprintf( g.msg, "f(%s) contains %s", parent, csvchildren );
+	// we need to modify the string, so make a mutable copy..
+	csvchildren = strdup( csvchildren );
 
-	csvForeach( csvchildren, &testcontains_foundone, (void *)&g );
+	char msg[1024];
+	sprintf( msg, "f(%s) contains %s", parent, csvchildren );
 
-	sprintf( g.msg, "f(%s) has %d children(s)", parent, g.nincsv );
-	testint( g.nfound, g.nincsv, g.msg );
+	// foreach csv value in csvchildren..
+	char *element = csvchildren;
+	char *comma;
+	int nfound = 0;
+	int nincsv = 0;
+	while( (comma=strchr( element, ',' )) != NULL )
+	{
+		// found the first comma in string..
+		*comma = '\0';
+		nincsv++;
+
+		// check whether element is in the set (as it should be!)
+		if( setIn( s, element ) )
+		{
+			// good: expected element to be in, and it is.
+			printf( "T %s: %s is in set: ok\n", msg, element );
+			nfound++;
+		} else
+		{
+			printf( "T %s: %s should be in set but isn't\n",
+				msg, element );
+		}
+
+		// move element to one beyond where comma was..
+		element = comma+1;
+	}
+	// don't forget to free the copy..
+	free( csvchildren );
+
+	sprintf( msg, "f(%s) has %d children(s)", parent, nincsv );
+	testint( nfound, nincsv, msg );
 }
 
 #ifdef TESTSET
