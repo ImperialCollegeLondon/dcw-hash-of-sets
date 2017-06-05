@@ -2,14 +2,14 @@ DEST	=	$(HOME)/c-tools
 LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 CC	=	gcc
-CFLAGS	=	-I. -I$(INCDIR) -Wall -g
+CFLAGS	=	-I. -I$(INCDIR) -WBUILD -g
 LDLIBS	=	-L$(LIBDIR) -lADTs
-ALL	=	testfamcoll transform
+BUILD	=	testfamcoll transform
 
-all:	$(ALL)
+BUILD:	$(BUILD)
 
 clean:
-	rm -f lib* *.o $(ALL)
+	rm -f lib* *.o $(BUILD)
 
 test:	testfamcoll
 	./testfamcoll | ./summarisetests
@@ -20,3 +20,4 @@ testfamcoll.o:	famcoll.h csvsplit.h
 transform.o:	famcoll.h readline.h
 famcoll.o:	famcoll.h
 csvsplit.o:	csvsplit.h
+readline.o:	readline.h
