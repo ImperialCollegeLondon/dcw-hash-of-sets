@@ -22,19 +22,20 @@
  */
 void csvForeach( char *csvstring, csvforeachcb cb, void *extra )
 {
-	// strtok modifies it's string, so make a mutable copy..
+	// we need to modify the string, so make a mutable copy..
 	char *copy = strdup( csvstring );
 
-	char *first = strtok( copy, "," );
-	assert( first != NULL );
-	(*cb)( first, extra );
-	printf( "debug: csvForeach: found %s\n", first );
-
-	char *next;
-	while( (next = strtok(NULL,",")) != NULL )
+	char *start = copy;
+	char *comma;
+	while( (comma=strchr( start, ',' )) != NULL )
 	{
-		printf( "debug: csvForeach: found %s\n", next );
-		(*cb)( next, extra );
+		// found the first comma after start
+		*comma = '\0';
+	printf( "debug: csvForeach: found value %s\n", start );
+		(*cb)( start, extra );
+
+		// move start to one beyond where comma was..
+		start = comma+1;
 	}
 	// don't forget to..
 	free( copy );
