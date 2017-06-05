@@ -53,7 +53,7 @@ static void testint( int v, int expected, char *msg )
 }
 
 
-// testcontains called csvForeach and needs to squeeze 2 pieces of
+// testcontains called csvForeach and needs to squeeze 4 pieces of
 // info into the void *extra parameter: so we use a pointer to this
 // shortlived but elegantly named struct:-):
 typedef struct { set s; char msg[1024]; int nincsv; int nfound; } grumble;
