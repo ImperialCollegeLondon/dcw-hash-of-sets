@@ -2,7 +2,7 @@ DEST	=	$(HOME)/c-tools
 LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 CC	=	gcc
-CFLAGS	=	-I. -I$(INCDIR) -WBUILD -g
+CFLAGS	=	-I. -I$(INCDIR) -Wall -g
 LDLIBS	=	-L$(LIBDIR) -lADTs
 BUILD	=	testfamcoll transform
 
