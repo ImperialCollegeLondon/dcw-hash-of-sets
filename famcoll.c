@@ -91,12 +91,6 @@ void famcollFree( famcoll f )
 }
 
 
-static void printchild( FILE *out, setkey s )
-{
-	fprintf( out, "%s,", s );
-}
-
-
 /*
  * famcollAddChild( f, parent, child );
  *	Add child to parent.
@@ -106,7 +100,7 @@ void famcollAddChild( famcoll f, char *parent, char *child )
 	set s = (set)hashFind( f->f, parent );
 	if( s==NULL )	/* parent not present in f yet */
 	{
-		s  = setCreate( &printchild );
+		s  = setCreate( NULL );
 		hashSet( f->f, parent, (hashvalue)s );
 		f->nfamilies++;
 	}
