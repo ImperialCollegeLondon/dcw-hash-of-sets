@@ -52,34 +52,6 @@ static void testint( int v, int expected, char *msg )
 }
 
 
-// testcontains called csvForeach and needs to squeeze 4 pieces of
-// info into the void *extra parameter: so we use a pointer to this
-// shortlived but elegantly named struct:-):
-typedef struct { set s; char msg[1024]; int nincsv; int nfound; } grumble;
-
-/*
- * testcontains_foundone( element, &a_grumble_struct );
- *	ok, found element in our csvstring.  we expect
- *	that it IS a child of the grumble struct's set.
- *	let's check.
- */
-void testcontains_foundone( char *element, void *extra )
-{
-	grumble *g = (grumble *)extra;		// extra is really a grumble *
-	g->nincsv++;
-	if( setIn( g->s, element ) )
-	{
-		// good: expected element to be in, and it is.
-		printf( "T %s: %s is in set: ok\n", g->msg, element );
-		g->nfound++;
-	} else
-	{
-		printf( "T %s: %s should be in set but isn't\n",
-			g->msg, element );
-	}
-}
-
-
 /*
  * testcontains( f, parent, csvchildren );
  *	test that famcoll f contains an entry for parent, containing
