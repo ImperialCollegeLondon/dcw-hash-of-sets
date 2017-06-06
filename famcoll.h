@@ -22,7 +22,7 @@
  */
 typedef struct famcoll_s *famcoll;
 
-/* a family collection callback is called by famcollForeach() once per family */
+/* a famcoll foreach callback is called by famcollForeach() once per family */
 typedef void (*famcollforeachcb)( char *parent, set kids, void *extra );
 
 extern famcoll famcollCreate( void );
