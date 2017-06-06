@@ -70,14 +70,18 @@ void testcontains( famcoll f, char *parent, char *csvchildren )
 	sprintf( msg, "f(%s) contains %s", parent, csvchildren );
 
 	// foreach csv value in csvchildren..
-	char *element = csvchildren;
-	char *comma;
 	int nfound = 0;
 	int nincsv = 0;
-	while( (comma=strchr( element, ',' )) != NULL )
+	char *element = csvchildren;
+	for(;;)
 	{
-		// found the first comma in string..
-		*comma = '\0';
+		char *comma=strchr( element, ',' );
+		if( comma != NULL )
+		{
+			// found the first comma after element
+			*comma = '\0';
+		}
+		//printf( "debug: csvForeach: found value %s\n", element );
 		nincsv++;
 
 		// check whether element is in the set (as it should be!)
@@ -88,11 +92,13 @@ void testcontains( famcoll f, char *parent, char *csvchildren )
 			nfound++;
 		} else
 		{
-			printf( "T %s: %s should be in set but isn't\n",
+			printf( "T %s: %s should be in set but isn't: bad\n",
 				msg, element );
 		}
 
-		// move element to one beyond where comma was..
+	if( comma == NULL ) break;
+
+		// move start to one beyond where comma was..
 		element = comma+1;
 	}
 	// don't forget to free the copy..
@@ -102,13 +108,6 @@ void testcontains( famcoll f, char *parent, char *csvchildren )
 	testint( nfound, nincsv, msg );
 }
 
-#ifdef TESTSET
-static void myPrint( FILE *out, char *s )
-{
-	fprintf( out, "%s,", s );
-}
-#endif
-
 int main( int argc, char **argv )
 {
 	if( argc > 1 )
@@ -117,7 +116,7 @@ int main( int argc, char **argv )
 	}
 
 	#ifdef TESTSET
-	set s = setCreate( &myPrint );
+	set s = setCreate( NULL );
 	setAdd( s, "one" );
 	printf( "set s = " );
 	setDump( stdout, s );
@@ -165,7 +164,6 @@ int main( int argc, char **argv )
 	printf( "added <d> to <two> in f\n" );
 	testcontains( f, "one", "a,b,c" );
 	testcontains( f, "two", "d,a" );	// order irrelevent
-	testcontains( f, "three", "z" );
 
 	printf( "final families:\n" );
 	famcollDump( stdout, f );
