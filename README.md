@@ -51,31 +51,49 @@ To build this "hash of sets of strings" example:
 1. if you don't already have ~/c-tools installed,
    download the c-tools to your home directory:
 
+```
 cd
 wget http://www.doc.ic.ac.uk/~dcw/c-tools.tgz
 tar xzf c-tools.tgz
+```
 
 2. set up this project to use the c-tools library:
 
 bash users should do the following:
 
+```
 export ARCH=`arch`
+```
 
 Whereas csh users should do:
 
+```
 setenv ARCH `arch`
+```
 
 3. build this project via:
 
+```
 make
+```
 
 4. run it's tests:
 
+```
 make test
+```
 
 5. run transform on the pc-input file and check for memory leaks:
 
+```
 valgrind ./transform < pc-input
+```
+
+
+
+As an aside, the summarisetests utility here is worth installing into your
+TOOLDIR/bin - type make install to do that.
+
 
 
 # Doing transform as a Perl one-liner
