@@ -1,4 +1,5 @@
 DEST	=	$(HOME)/c-tools
+BINDIR	=	$(DEST)/bin
 LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 CC	=	gcc
@@ -20,3 +21,6 @@ testfamcoll.o:	famcoll.h
 transform.o:	famcoll.h readline.h
 famcoll.o:	famcoll.h
 readline.o:	readline.h
+
+install:
+	install -m 755 summarisetests $(BINDIR)
