@@ -91,7 +91,7 @@ valgrind ./transform < pc-input
 
 
 
-As an aside, the summarisetests utility here is worth installing into your
+6. Note that the summarisetests utility here is worth installing into your
 TOOLDIR/bin - type make install to do that.
 
 
