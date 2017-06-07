@@ -20,6 +20,7 @@
 
 static famcoll f;
 
+//#define DEBUG
 
 #define STRSIZE 1024
 
@@ -38,7 +39,9 @@ int main( int argc, char **argv )
 		assert( child != NULL );
 		//printf( "// debug parent='%s', child='%s'\n", parent, child );
 		famcollAddChild( f, parent, child );
-		printf( "added <%s> to <%s>\n", child, parent );
+		#ifdef DEBUG
+		printf( "debug: added <%s> to <%s>\n", child, parent );
+		#endif
 	}
 
 	famcollDump( stdout, f );
