@@ -23,11 +23,11 @@ there may be any number of parents, any number of children per parent,
 and the parent,child information may come in any order.
 
 and our goal is to collect all the children belonging to each parent,
-producing output showing, for each parent, the complete sorted list of
-their children:
+producing output showing, for each parent, the complete set of
+their children (ideally sorted):
 
 ```
-one: b,c,d          (one is the parent of b, c and d - in sorted order)
+one: b,c,d          (one is the parent of b, c and d)
 two: c              (two is the parent of c only)
 ```
 
