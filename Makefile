@@ -1,4 +1,7 @@
-DEST	=	$(HOME)/c-tools
+# destination: home dir..
+# DEST	=	$(HOME)
+# or can install into TOOLDIR (env var, eg ~/c-tools)
+DEST	=	$(TOOLDIR)
 BINDIR	=	$(DEST)/bin
 LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
@@ -7,7 +10,7 @@ CFLAGS	=	-I. -I$(INCDIR) -Wall -g
 LDLIBS	=	-L$(LIBDIR) -lADTs
 BUILD	=	testfamcoll transform
 
-BUILD:	$(BUILD)
+all:	$(BUILD)
 
 clean:
 	rm -f lib* *.o $(BUILD)
