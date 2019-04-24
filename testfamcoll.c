@@ -12,6 +12,7 @@
 
 #include <set.h>
 #include <hash.h>
+#include <testutils.h>
 
 #include "famcoll.h"
 
@@ -20,36 +21,6 @@
 
 
 static famcoll f;
-
-
-#if 1
-static char *bool2str[] = { "false", "true" };
-
-static void testbool( bool v, bool expected, char *msg )
-{
-	if( v != expected )
-	{
-		printf( "T %s: should be %s, was %s: bad\n",
-			msg, bool2str[expected], bool2str[v] );
-	} else
-	{
-		printf( "T %s: is %s: ok\n", msg, bool2str[v] );
-	}
-}
-#endif
-
-
-static void testint( int v, int expected, char *msg )
-{
-	if( v != expected )
-	{
-		printf( "T %s: should be %d, was %d: bad\n",
-			msg, expected, v );
-	} else
-	{
-		printf( "T %s: is %d: ok\n", msg, v );
-	}
-}
 
 
 /*
@@ -88,11 +59,11 @@ void testcontains( famcoll f, char *parent, char *csvchildren )
 		if( setIn( s, element ) )
 		{
 			// good: expected element to be in, and it is.
-			printf( "T %s: %s is in set: ok\n", msg, element );
+			printf( "T %s: %s is in set: OK\n", msg, element );
 			nfound++;
 		} else
 		{
-			printf( "T %s: %s should be in set but isn't: bad\n",
+			printf( "T %s: %s should be in set but isn't: FAIL\n",
 				msg, element );
 		}
 
@@ -121,7 +92,7 @@ int main( int argc, char **argv )
 	printf( "set s = " );
 	setDump( stdout, s );
 	printf( "\n" );
-	testbool( setIn( s, "one" ), true, "one in s" );
+	testbool( setIn( s, "one" ), "one in s" );
 	testint( setNMembers(s), 1, "s has 1 entry" );
 	#endif
 
@@ -133,8 +104,8 @@ int main( int argc, char **argv )
 	set s2 = famcollChildren( f, "one" );
 	testint( setNMembers(s2), 1, "f[one] has 1 child" );
 
-	testbool( setIn(s2, "a" ), true, "a in f[one]" );
-	testbool( setIn(s2, "b" ), false, "b in f[one]" );
+	testbool( setIn(s2, "a" ), "a in f[one]" );
+	testbool( !setIn(s2, "b" ), "b in f[one]" );
 
 	printf( "initial families:\n" );
 	famcollDump( stdout, f );

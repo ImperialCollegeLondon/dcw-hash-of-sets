@@ -43,7 +43,8 @@ The main program that transforms the input to the output is "transform.c".
 
 This code depends on sets-of-strings,
 and hashes-from-strings-to-generic-pointers,
-from the May 2017 version of my c-tools library -
+and the minimal test-utils module, all
+from the May 2019 version of my c-tools library -
 which you can download from my website (URL shown below).
 
 To build this "hash of sets of strings" example:

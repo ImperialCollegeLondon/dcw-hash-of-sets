@@ -7,7 +7,7 @@ LIBDIR	=	$(DEST)/lib/$(ARCH)
 INCDIR	=	$(DEST)/include
 CC	=	gcc
 CFLAGS	=	-I. -I$(INCDIR) -Wall -g
-LDLIBS	=	-L$(LIBDIR) -lADTs
+LDLIBS	=	-L$(LIBDIR) -lADTs -ltestlib
 BUILD	=	testfamcoll transform
 
 all:	$(BUILD)
@@ -16,7 +16,7 @@ clean:
 	rm -f lib* *.o $(BUILD)
 
 test:	testfamcoll
-	./testfamcoll | ./summarisetests
+	summarisetests --max 15 ./testfamcoll
 
 testfamcoll:	testfamcoll.o famcoll.o
 transform:	transform.o famcoll.o readline.o
